@@ -1,5 +1,35 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import './Search.css';
+
+// localStorage utilities for search history
+const SEARCH_HISTORY_KEY = 'music-app-search-history';
+
+const getSearchHistory = (): string[] => {
+  try {
+    const history = localStorage.getItem(SEARCH_HISTORY_KEY);
+    return history ? JSON.parse(history) : [];
+  } catch {
+    return [];
+  }
+};
+
+const addToSearchHistory = (query: string): void => {
+  if (!query.trim()) return;
+  
+  const history = getSearchHistory();
+  // Remove if already exists to avoid duplicates
+  const filteredHistory = history.filter(item => item !== query);
+  // Add to beginning
+  const newHistory = [query, ...filteredHistory];
+  // Keep only last 5
+  const limitedHistory = newHistory.slice(0, 5);
+  
+  try {
+    localStorage.setItem(SEARCH_HISTORY_KEY, JSON.stringify(limitedHistory));
+  } catch {
+    // Handle localStorage errors silently
+  }
+};
 
 type Result = {
   key: string;
@@ -30,11 +60,39 @@ function Search() {
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setQuery(e.target.value);
   };
-  const handleSearch = async () => {
-    const response = await fetch(`https://api.mixcloud.com/search/?q=${query}&type=cloudcast&limit=6`);
+
+  const handleSearchWithQuery = async (searchQuery: string, saveToHistory: boolean = true) => {
+    if (!searchQuery.trim()) return;
+    
+    const response = await fetch(`https://api.mixcloud.com/search/?q=${searchQuery}&type=cloudcast&limit=6`);
     const json = await response.json();
     setResults(json?.data || []);
+    
+    // Save to search history after successful search only if specified
+    if (saveToHistory) {
+      addToSearchHistory(searchQuery.trim());
+    }
   };
+
+  const handleSearch = async () => {
+    await handleSearchWithQuery(query, true);
+  };
+
+  // Listen for recent search clicks
+  useEffect(() => {
+    const handleRecentSearchClick = (event: any) => {
+      const searchQuery = event.detail;
+      setQuery(searchQuery);
+      // Automatically trigger search without saving to history
+      handleSearchWithQuery(searchQuery, false);
+    };
+
+    window.addEventListener('recentSearchClick', handleRecentSearchClick);
+    
+    return () => {
+      window.removeEventListener('recentSearchClick', handleRecentSearchClick);
+    };
+  }, [handleSearchWithQuery]);
 
   return <div className="search-container">
     <div className="search-input-row">
@@ -65,3 +123,4 @@ function MixCloudItem({ result }: { result: Result }) {
 }
 
 export default Search;
+export { getSearchHistory };

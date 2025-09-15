@@ -8,6 +8,7 @@ type SelectedImage = {
   src: string;
   alt: string;
   largeSrc: string;
+  trackUrl?: string;
 }
 
 function App() {

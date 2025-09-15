@@ -5,6 +5,7 @@ type SelectedImage = {
   src: string;
   alt: string;
   largeSrc: string;
+  trackUrl?: string;
 }
 
 // localStorage utilities for search history
@@ -135,7 +136,8 @@ function MixCloudItem({ result, onImageSelect }: MixCloudItemProps) {
       const selectedImage: SelectedImage = {
         src: result.pictures.thumbnail,
         alt: result.name,
-        largeSrc: result.pictures.large || result.pictures.extra_large || result.pictures.medium
+        largeSrc: result.pictures.large || result.pictures.extra_large || result.pictures.medium,
+        trackUrl: result.url
       };
       onImageSelect(selectedImage, imageElement);
     }

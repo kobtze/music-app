@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { getSearchHistory } from './Search';
-import './Search.css';
+import './Recent.css';
 
 function Recent() {
   const [searchHistory, setSearchHistory] = useState<string[]>([]);

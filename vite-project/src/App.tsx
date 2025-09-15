@@ -3,13 +3,7 @@ import './App.css'
 import Search from './components/Search'
 import Player from './components/Player'
 import Recent from './components/Recent'
-
-type SelectedImage = {
-  src: string;
-  alt: string;
-  largeSrc: string;
-  trackUrl?: string;
-}
+import type { SelectedImage } from './components/types'
 
 function App() {
   const [selectedImage, setSelectedImage] = useState<SelectedImage | null>(null)

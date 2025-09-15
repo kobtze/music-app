@@ -1,16 +1,6 @@
 import { useState, useEffect } from 'react';
 import './Player.css';
-
-type SelectedImage = {
-  src: string;
-  alt: string;
-  largeSrc: string;
-  trackUrl?: string;
-}
-
-type PlayerProps = {
-  selectedImage: SelectedImage | null;
-}
+import type { SelectedImage, PlayerProps } from './types';
 
 function Player({ selectedImage }: PlayerProps) {
   const [displayImage, setDisplayImage] = useState<SelectedImage | null>(null);

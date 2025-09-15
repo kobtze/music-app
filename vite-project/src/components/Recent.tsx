@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { getSearchHistory } from './Search';
+import { getSearchHistory, SEARCH_HISTORY_KEY } from '../utils/searchHistory';
 import './Recent.css';
 
 function Recent() {
@@ -16,7 +16,7 @@ function Recent() {
 
     // Listen for storage changes to update history when searches are made
     const handleStorageChange = (e: StorageEvent) => {
-      if (e.key === 'music-app-search-history') {
+      if (e.key === SEARCH_HISTORY_KEY) {
         loadHistory();
       }
     };

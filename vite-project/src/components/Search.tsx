@@ -1,36 +1,7 @@
 import { useState, useEffect } from 'react';
 import './Search.css';
 import type { SelectedImage, Result, SearchProps, MixCloudItemProps } from './types';
-
-// localStorage utilities for search history
-const SEARCH_HISTORY_KEY = 'music-app-search-history';
-
-const getSearchHistory = (): string[] => {
-  try {
-    const history = localStorage.getItem(SEARCH_HISTORY_KEY);
-    return history ? JSON.parse(history) : [];
-  } catch {
-    return [];
-  }
-};
-
-const addToSearchHistory = (query: string): void => {
-  if (!query.trim()) return;
-  
-  const history = getSearchHistory();
-  // Remove if already exists to avoid duplicates
-  const filteredHistory = history.filter(item => item !== query);
-  // Add to beginning
-  const newHistory = [query, ...filteredHistory];
-  // Keep only last 5
-  const limitedHistory = newHistory.slice(0, 5);
-  
-  try {
-    localStorage.setItem(SEARCH_HISTORY_KEY, JSON.stringify(limitedHistory));
-  } catch {
-    // Handle localStorage errors silently
-  }
-};
+import { addToSearchHistory } from '../utils/searchHistory';
 
 
 function Search({ onImageSelect }: SearchProps) {
@@ -149,4 +120,3 @@ function MixCloudItem({ result, onImageSelect }: MixCloudItemProps) {
 }
 
 export default Search;
-export { getSearchHistory };

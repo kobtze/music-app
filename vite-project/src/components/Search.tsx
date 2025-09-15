@@ -30,9 +30,9 @@ function Search() {
     setQuery(e.target.value);
   };
   const handleSearch = async () => {
-    const response = await fetch(`https://api.mixcloud.com/search/?q=${query}&type=cloudcast`);
+    const response = await fetch(`https://api.mixcloud.com/search/?q=${query}&type=cloudcast&limit=6`);
     const json = await response.json();
-    setResults(json?.data?.slice(0, 10) || []);
+    setResults(json?.data || []);
   };
 
   return <div>

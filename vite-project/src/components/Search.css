@@ -9,6 +9,8 @@
   display: flex;
   gap: 0.5rem;
   flex-shrink: 0;
+  width: 100%;
+  max-width: 100%;
 }
 
 .search-input {
@@ -20,6 +22,28 @@
   font-family: inherit;
   background-color: inherit;
   color: inherit;
+  min-width: 0;
+  max-width: calc(100% - 90px);
+}
+
+.search-button {
+  padding: 0.6em 0.8em;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  font-size: 1em;
+  font-family: inherit;
+  background-color: rgba(255, 255, 255, 0.1);
+  color: inherit;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  flex-shrink: 0;
+  white-space: nowrap;
+  max-width: 80px;
+}
+
+.search-button:hover {
+  background-color: rgba(255, 255, 255, 0.2);
+  border-color: rgba(255, 255, 255, 0.4);
 }
 
 .search-results {

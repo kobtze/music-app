@@ -103,7 +103,7 @@ function Search() {
         className="search-input"
         placeholder="Search music..."
       />
-      <button onClick={handleSearch}>Search</button>
+      <button onClick={handleSearch} className="search-button">Search</button>
     </div>
     <div className="search-results">
       {results.map((result) => (

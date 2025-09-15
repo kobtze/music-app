@@ -47,7 +47,6 @@ function Player({ selectedImage }: PlayerProps) {
 
   return (
     <div className="player-container">
-      <h3 className="player-title">Player</h3>
       <div className="player-image-area">
         {displayImage ? (
           <img

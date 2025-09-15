@@ -67,15 +67,20 @@ type SearchProps = {
 function Search({ onImageSelect }: SearchProps) {
   const [query, setQuery] = useState('');
   const [results, setResults] = useState<Result[]>([]);
+  const [nextOffset, setNextOffset] = useState(0);
+  const [hasNextPage, setHasNextPage] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
+  const [notFound, setNotFound] = useState(false);
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setQuery(e.target.value);
   };
 
-  const handleSearchWithQuery = async (searchQuery: string, saveToHistory: boolean = true) => {
+  const handleSearchWithQuery = async (searchQuery: string, saveToHistory: boolean = true, offset: number = 0) => {
     if (!searchQuery.trim()) return;
     
-    const response = await fetch(`https://api.mixcloud.com/search/?q=${searchQuery}&type=cloudcast&limit=6`);
+    setIsLoading(true);
+    const response = await fetch(`https://api.mixcloud.com/search/?q=${searchQuery}&type=cloudcast&limit=6&offset=${offset}`);
     const json = await response.json();
     setResults(json?.data || []);
     
@@ -83,6 +88,21 @@ function Search({ onImageSelect }: SearchProps) {
     if (saveToHistory) {
       addToSearchHistory(searchQuery.trim());
     }
+    // set not found state
+    setNotFound(json?.data?.length === 0 ? true : false);
+
+    // Check if there are more results by looking at json.paging.next
+    setHasNextPage(json?.paging?.next ? true : false);
+
+    if (hasNextPage) {
+      setNextOffset(offset + 6);
+    }
+
+    setIsLoading(false);
+  };
+
+  const handleNextPage = async () => {
+    await handleSearchWithQuery(query, false, nextOffset);
   };
 
   const handleSearch = async () => {
@@ -95,7 +115,8 @@ function Search({ onImageSelect }: SearchProps) {
       const searchQuery = event.detail;
       setQuery(searchQuery);
       // Automatically trigger search without saving to history
-      handleSearchWithQuery(searchQuery, false);
+      setNextOffset(0);
+      handleSearchWithQuery(searchQuery, false, nextOffset);
     };
 
     window.addEventListener('recentSearchClick', handleRecentSearchClick);
@@ -116,11 +137,23 @@ function Search({ onImageSelect }: SearchProps) {
       />
       <button onClick={handleSearch} className="search-button">Search</button>
     </div>
+    {notFound && (
+      <div className="not-found">
+        <p>No results found</p>
+      </div>
+    )}
     <div className="search-results">
       {results.map((result) => (
         <MixCloudItem key={result.key} result={result} onImageSelect={onImageSelect} />
       ))}
     </div>
+    {hasNextPage && (
+      <div className="pagination-controls">
+        <button onClick={handleNextPage} className="next-button" disabled={isLoading}>
+          {isLoading ? 'Loading...' : 'Next'}
+        </button>
+      </div>
+    )}
   </div>;
 }
 

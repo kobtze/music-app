@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import './Search.css';
 
 type Result = {
   key: string;
@@ -35,10 +36,18 @@ function Search() {
     setResults(json?.data || []);
   };
 
-  return <div>
-    <input type="text" value={query} onChange={handleInputChange} />
-    <button onClick={handleSearch}>Search</button>
-    <div>
+  return <div className="search-container">
+    <div className="search-input-row">
+      <input 
+        type="text" 
+        value={query} 
+        onChange={handleInputChange} 
+        className="search-input"
+        placeholder="Search music..."
+      />
+      <button onClick={handleSearch}>Search</button>
+    </div>
+    <div className="search-results">
       {results.map((result) => (
         <MixCloudItem key={result.key} result={result} />
       ))}
@@ -48,10 +57,10 @@ function Search() {
 
 function MixCloudItem({ result }: { result: Result }) {
   return (
-  <div>
-    <img src={result.pictures.thumbnail} alt={result.name} />
-    <div>{result.name}</div>
-  </div>
+    <div className="mixcloud-item">
+      <img src={result.pictures.thumbnail} alt={result.name} />
+      <div className="mixcloud-item-text">{result.name}</div>
+    </div>
   );
 }
 

@@ -9,9 +9,11 @@ function App() {
 
   return (
     <>
-      <Search />
-      <Player />
-      <Recent />
+      <div className="components-row">
+        <Search />
+        <Player />
+        <Recent />
+      </div>
     </>
   )
 }

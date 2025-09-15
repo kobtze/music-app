@@ -59,3 +59,10 @@
   box-sizing: border-box;
   overflow: hidden;
 }
+
+/* Global flying animation styles */
+.flying-image {
+  border-radius: 4px;
+  object-fit: cover;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+}

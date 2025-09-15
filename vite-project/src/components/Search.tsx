@@ -1,6 +1,12 @@
 import { useState, useEffect } from 'react';
 import './Search.css';
 
+type SelectedImage = {
+  src: string;
+  alt: string;
+  largeSrc: string;
+}
+
 // localStorage utilities for search history
 const SEARCH_HISTORY_KEY = 'music-app-search-history';
 
@@ -53,7 +59,11 @@ type Pictures = {
 "1024wx1024h": string;
 };
 
-function Search() {
+type SearchProps = {
+  onImageSelect: (image: SelectedImage, sourceElement: HTMLElement) => void;
+}
+
+function Search({ onImageSelect }: SearchProps) {
   const [query, setQuery] = useState('');
   const [results, setResults] = useState<Result[]>([]);
 
@@ -107,15 +117,32 @@ function Search() {
     </div>
     <div className="search-results">
       {results.map((result) => (
-        <MixCloudItem key={result.key} result={result} />
+        <MixCloudItem key={result.key} result={result} onImageSelect={onImageSelect} />
       ))}
     </div>
   </div>;
 }
 
-function MixCloudItem({ result }: { result: Result }) {
+type MixCloudItemProps = {
+  result: Result;
+  onImageSelect: (image: SelectedImage, sourceElement: HTMLElement) => void;
+}
+
+function MixCloudItem({ result, onImageSelect }: MixCloudItemProps) {
+  const handleClick = (event: React.MouseEvent<HTMLDivElement>) => {
+    const imageElement = event.currentTarget.querySelector('img');
+    if (imageElement) {
+      const selectedImage: SelectedImage = {
+        src: result.pictures.thumbnail,
+        alt: result.name,
+        largeSrc: result.pictures.large || result.pictures.extra_large || result.pictures.medium
+      };
+      onImageSelect(selectedImage, imageElement);
+    }
+  };
+
   return (
-    <div className="mixcloud-item">
+    <div className="mixcloud-item" onClick={handleClick}>
       <img src={result.pictures.thumbnail} alt={result.name} />
       <div className="mixcloud-item-text">{result.name}</div>
     </div>

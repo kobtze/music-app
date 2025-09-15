@@ -1,0 +1,66 @@
+.player-container {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  gap: 1rem;
+}
+
+.player-title {
+  margin: 0;
+  font-size: 1.2em;
+  font-weight: 600;
+  color: inherit;
+  flex-shrink: 0;
+}
+
+.player-image-area {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 0;
+  position: relative;
+  border-radius: 8px;
+  overflow: hidden;
+  background-color: rgba(255, 255, 255, 0.05);
+}
+
+.player-image {
+  max-width: 100%;
+  max-height: 100%;
+  width: auto;
+  height: auto;
+  border-radius: 8px;
+  object-fit: cover;
+  opacity: 0;
+  transform: scale(0.95);
+  transition: opacity 0.6s ease-out, transform 0.6s ease-out;
+}
+
+.player-image.fade-in {
+  opacity: 1;
+  transform: scale(1);
+}
+
+.player-placeholder {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  color: rgba(255, 255, 255, 0.6);
+  font-style: italic;
+  font-size: 0.9em;
+  padding: 2rem;
+  line-height: 1.4;
+}
+
+.player-placeholder span {
+  max-width: 200px;
+}
+
+/* Flying animation styles */
+.flying-image {
+  border-radius: 4px;
+  object-fit: cover;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+}

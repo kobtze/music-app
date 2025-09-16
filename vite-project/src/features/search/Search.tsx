@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import './Search.css';
-import type { SelectedImage, SearchProps, MixCloudItemProps } from '../../types';
+import type { SelectedImage, SearchProps, MixcloudItemProps } from '../../types';
 import { useMixcloudSearch } from '../../hooks/useMixcloudSearch';
 import { useSearchHistory } from '../../hooks/useSearchHistory';
 
@@ -68,7 +68,7 @@ function Search({ onImageSelect }: SearchProps) {
     )}
     <div className="search-results">
       {results.map((result) => (
-        <MixCloudItem key={result.key} result={result} onImageSelect={onImageSelect} />
+        <MixcloudItem key={result.key} result={result} onImageSelect={onImageSelect} />
       ))}
     </div>
     {hasNextPage && (
@@ -81,7 +81,7 @@ function Search({ onImageSelect }: SearchProps) {
   </div>;
 }
 
-function MixCloudItem({ result, onImageSelect }: MixCloudItemProps) {
+function MixcloudItem({ result, onImageSelect }: MixcloudItemProps) {
   const handleClick = (event: React.MouseEvent<HTMLDivElement>) => {
     const imageElement = event.currentTarget.querySelector('img');
     if (imageElement) {

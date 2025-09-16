@@ -6,3 +6,6 @@ export type SelectedImage = {
   largeSrc: string;
   trackUrl?: string;
 };
+
+// Common prop pattern for image selection handlers
+export type ImageSelectHandler = (image: SelectedImage, sourceElement: HTMLElement) => void;

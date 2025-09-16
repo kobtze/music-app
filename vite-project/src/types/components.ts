@@ -1,6 +1,6 @@
 // Component prop types
 
-import type { SelectedImage } from './shared';
+import type { SelectedImage, ImageSelectHandler } from './shared';
 import type { Result } from './api';
 
 export type PlayerProps = {
@@ -8,10 +8,10 @@ export type PlayerProps = {
 };
 
 export type SearchProps = {
-  onImageSelect: (image: SelectedImage, sourceElement: HTMLElement) => void;
+  onImageSelect: ImageSelectHandler;
 };
 
-export type MixCloudItemProps = {
+export type MixcloudItemProps = {
   result: Result;
-  onImageSelect: (image: SelectedImage, sourceElement: HTMLElement) => void;
+  onImageSelect: ImageSelectHandler;
 };

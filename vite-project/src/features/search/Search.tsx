@@ -3,6 +3,7 @@ import './Search.css';
 import type { SelectedImage, SearchProps, MixcloudItemProps } from '../../types';
 import { useMixcloudSearch } from '../../hooks/useMixcloudSearch';
 import { useSearchHistory } from '../../hooks/useSearchHistory';
+import { useLocalStorage } from '../../hooks/useLocalStorage';
 
 // Simple loading spinner
 function LoadingSpinner() {
@@ -32,6 +33,7 @@ function Search({ onImageSelect }: SearchProps) {
   const [query, setQuery] = useState('');
   const { results, isLoading, hasNextPage, nextOffset, notFound, error, search, reset } = useMixcloudSearch();
   const [_, addToHistory] = useSearchHistory();
+  const [viewMode, setViewMode] = useLocalStorage<'list' | 'tile'>('searchViewMode', 'list');
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setQuery(e.target.value);
@@ -96,7 +98,7 @@ function Search({ onImageSelect }: SearchProps) {
         <p>No results found</p>
       </div>
     )}
-    <div className="search-results">
+    <div className={`search-results ${viewMode === 'tile' ? 'tile-view' : 'list-view'}`}>
       {isLoading ? (
         <LoadingSpinner />
       ) : (
@@ -105,13 +107,28 @@ function Search({ onImageSelect }: SearchProps) {
         ))
       )}
     </div>
-    {hasNextPage && (
-      <div className="pagination-controls">
+    <div className="pagination-controls">
+      {hasNextPage && (
         <button onClick={handleNextPage} className="next-button" disabled={isLoading}>
           {isLoading ? 'Loading...' : 'Next'}
         </button>
+      )}
+      <div className="view-toggle-row">
+        <button 
+          onClick={() => setViewMode('list')} 
+          className={`view-toggle-button ${viewMode === 'list' ? 'active' : ''}`}
+        >
+          List
+        </button>
+        <button 
+          onClick={() => setViewMode('tile')} 
+          className={`view-toggle-button ${viewMode === 'tile' ? 'active' : ''}`}
+        >
+          Tile
+        </button>
       </div>
-    )}
+    </div>
+    
   </div>;
 }
 

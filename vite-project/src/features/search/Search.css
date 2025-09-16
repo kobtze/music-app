@@ -45,6 +45,69 @@
   border-color: rgba(255, 255, 255, 0.4);
 }
 
+/* Pagination Controls */
+.pagination-controls {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 0.5rem;
+  flex-shrink: 0;
+}
+
+/* View Toggle Buttons */
+.view-toggle-row {
+  display: flex;
+  gap: 0.5rem;
+  margin-left: auto;
+}
+
+.view-toggle-button {
+  padding: 0.5em 1em;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  border-radius: 6px;
+  font-size: 0.9em;
+  font-family: inherit;
+  background-color: rgba(255, 255, 255, 0.05);
+  color: inherit;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  min-width: 60px;
+}
+
+.view-toggle-button:hover {
+  background-color: rgba(255, 255, 255, 0.1);
+  border-color: rgba(255, 255, 255, 0.3);
+}
+
+.view-toggle-button.active {
+  background-color: rgba(255, 255, 255, 0.2);
+  border-color: rgba(255, 255, 255, 0.4);
+  color: #fff;
+}
+
+/* Next Button */
+.next-button {
+  padding: 0.6em 1em;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  font-size: 1em;
+  font-family: inherit;
+  background-color: rgba(255, 255, 255, 0.1);
+  color: inherit;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.next-button:hover:not(:disabled) {
+  background-color: rgba(255, 255, 255, 0.2);
+  border-color: rgba(255, 255, 255, 0.4);
+}
+
+.next-button:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
 .search-results {
   flex: 1;
   display: flex;
@@ -52,6 +115,55 @@
   gap: 0.5rem;
   overflow-y: auto;
   min-height: 0;
+}
+
+/* Tile View Styles */
+.search-results.tile-view {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+  gap: 0.5rem;
+  padding: 0.25rem 0;
+  overflow: hidden;
+}
+
+.search-results.tile-view .mixcloud-item {
+  flex-direction: column;
+  height: 100px;
+  min-height: 100px;
+  max-height: 100px;
+  padding: 0.25rem;
+  text-align: center;
+  gap: 0.25rem;
+  justify-content: center;
+}
+
+.search-results.tile-view .mixcloud-item img {
+  width: 50px;
+  height: 50px;
+  border-radius: 4px;
+  margin: 0 auto;
+  flex-shrink: 0;
+}
+
+.search-results.tile-view .mixcloud-item-text {
+  font-size: 0.7em;
+  line-height: 1.1;
+  white-space: normal;
+  text-overflow: unset;
+  overflow: hidden;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  text-align: center;
+  flex: 1;
+  min-height: 0;
+}
+
+/* List View Styles (default) */
+.search-results.list-view {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
 }
 
 .mixcloud-item {

@@ -4,10 +4,33 @@ import type { SelectedImage, SearchProps, MixcloudItemProps } from '../../types'
 import { useMixcloudSearch } from '../../hooks/useMixcloudSearch';
 import { useSearchHistory } from '../../hooks/useSearchHistory';
 
+// Simple loading spinner
+function LoadingSpinner() {
+  return (
+    <div className="loading-spinner">
+      <div className="spinner"></div>
+      <span>Loading...</span>
+    </div>
+  );
+}
+
+// Error display component
+function ErrorDisplay({ error, onRetry }: { error: string; onRetry: () => void }) {
+  return (
+    <div className="error-display">
+      <div className="error-icon">⚠️</div>
+      <div className="error-message">{error}</div>
+      <button onClick={onRetry} className="retry-button">
+        Try Again
+      </button>
+    </div>
+  );
+}
+
 
 function Search({ onImageSelect }: SearchProps) {
   const [query, setQuery] = useState('');
-  const { results, isLoading, hasNextPage, nextOffset, notFound, search, reset } = useMixcloudSearch();
+  const { results, isLoading, hasNextPage, nextOffset, notFound, error, search, reset } = useMixcloudSearch();
   const [_, addToHistory] = useSearchHistory();
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -17,10 +40,10 @@ function Search({ onImageSelect }: SearchProps) {
   const handleSearchWithQuery = async (searchQuery: string, saveToHistory: boolean = true, offset: number = 0) => {
     if (!searchQuery.trim()) return;
     
-    await search(searchQuery, offset);
+    const success = await search(searchQuery, offset);
     
-    // Save to search history after successful search only if specified
-    if (saveToHistory) {
+    // Save to search history only if search succeeded and saveToHistory is true
+    if (success && saveToHistory) {
       addToHistory(searchQuery.trim());
     }
   };
@@ -30,6 +53,10 @@ function Search({ onImageSelect }: SearchProps) {
   };
 
   const handleSearch = async () => {
+    await handleSearchWithQuery(query, true);
+  };
+
+  const handleRetry = async () => {
     await handleSearchWithQuery(query, true);
   };
 
@@ -61,15 +88,22 @@ function Search({ onImageSelect }: SearchProps) {
       />
       <button onClick={handleSearch} className="search-button">Search</button>
     </div>
-    {notFound && (
+    {error && (
+      <ErrorDisplay error={error} onRetry={handleRetry} />
+    )}
+    {notFound && !error && (
       <div className="not-found">
         <p>No results found</p>
       </div>
     )}
     <div className="search-results">
-      {results.map((result) => (
-        <MixcloudItem key={result.key} result={result} onImageSelect={onImageSelect} />
-      ))}
+      {isLoading ? (
+        <LoadingSpinner />
+      ) : (
+        results.map((result) => (
+          <MixcloudItem key={result.key} result={result} onImageSelect={onImageSelect} />
+        ))
+      )}
     </div>
     {hasNextPage && (
       <div className="pagination-controls">

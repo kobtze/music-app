@@ -1,8 +1,8 @@
 import { useState } from 'react'
 import './App.css'
-import Search from './components/Search'
-import Player from './components/Player'
-import Recent from './components/Recent'
+import Search from './features/search/Search'
+import Player from './features/player/Player'
+import Recent from './features/search/Recent'
 import type { SelectedImage } from './components/types'
 
 function App() {

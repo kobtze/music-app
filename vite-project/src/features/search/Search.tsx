@@ -1,17 +1,14 @@
 import { useState, useEffect } from 'react';
 import './Search.css';
-import type { SelectedImage, Result, SearchProps, MixCloudItemProps } from './types';
-import { addToSearchHistory } from '../utils/searchHistory';
-import { MIXCLOUD_API_BASE, SEARCH_LIMIT } from '../config/constants';
+import type { SelectedImage, SearchProps, MixCloudItemProps } from '../../components/types';
+import { useMixcloudSearch } from '../../hooks/useMixcloudSearch';
+import { useSearchHistory } from '../../hooks/useSearchHistory';
 
 
 function Search({ onImageSelect }: SearchProps) {
   const [query, setQuery] = useState('');
-  const [results, setResults] = useState<Result[]>([]);
-  const [nextOffset, setNextOffset] = useState(0);
-  const [hasNextPage, setHasNextPage] = useState(false);
-  const [isLoading, setIsLoading] = useState(false);
-  const [notFound, setNotFound] = useState(false);
+  const { results, isLoading, hasNextPage, nextOffset, notFound, search, reset } = useMixcloudSearch();
+  const [_, addToHistory] = useSearchHistory();
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setQuery(e.target.value);
@@ -20,27 +17,12 @@ function Search({ onImageSelect }: SearchProps) {
   const handleSearchWithQuery = async (searchQuery: string, saveToHistory: boolean = true, offset: number = 0) => {
     if (!searchQuery.trim()) return;
     
-    setIsLoading(true);
-    const response = await fetch(`${MIXCLOUD_API_BASE}/search/?q=${searchQuery}&type=cloudcast&limit=${SEARCH_LIMIT}&offset=${offset}`);
-    const json = await response.json();
-    setResults(json?.data || []);
+    await search(searchQuery, offset);
     
     // Save to search history after successful search only if specified
     if (saveToHistory) {
-      addToSearchHistory(searchQuery.trim());
+      addToHistory(searchQuery.trim());
     }
-    // set not found state
-    setNotFound(json?.data?.length === 0 ? true : false);
-
-    // Check if there are more results by looking at json.paging.next
-    if (json?.paging?.next && typeof json.paging.next === 'string') {
-      setHasNextPage(true);
-      setNextOffset(offset + SEARCH_LIMIT);
-    } else {
-      setHasNextPage(false);
-    }
-
-    setIsLoading(false);
   };
 
   const handleNextPage = async () => {
@@ -57,8 +39,8 @@ function Search({ onImageSelect }: SearchProps) {
       const searchQuery = event.detail;
       setQuery(searchQuery);
       // Automatically trigger search without saving to history
-      setNextOffset(0);
-      handleSearchWithQuery(searchQuery, false, nextOffset);
+      reset();
+      handleSearchWithQuery(searchQuery, false, 0);
     };
 
     window.addEventListener('recentSearchClick', handleRecentSearchClick);
@@ -66,7 +48,7 @@ function Search({ onImageSelect }: SearchProps) {
     return () => {
       window.removeEventListener('recentSearchClick', handleRecentSearchClick);
     };
-  }, [handleSearchWithQuery]);
+  }, [handleSearchWithQuery, reset]);
 
   return <div className="search-container">
     <div className="search-input-row">

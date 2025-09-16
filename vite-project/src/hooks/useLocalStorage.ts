@@ -21,6 +21,11 @@ export function useLocalStorage<T>(key: string, initialValue: T) {
       const valueToStore = value instanceof Function ? value(storedValue) : value;
       setStoredValue(valueToStore);
       localStorage.setItem(key, JSON.stringify(valueToStore));
+      
+      // Dispatch a custom event to notify other components in the same tab
+      window.dispatchEvent(new CustomEvent('localStorageChange', {
+        detail: { key, newValue: valueToStore }
+      }));
     } catch {
       // Handle localStorage errors silently
     }
@@ -35,7 +40,7 @@ export function useLocalStorage<T>(key: string, initialValue: T) {
     }
   };
 
-  // Listen for storage changes from other tabs
+  // Listen for storage changes from other tabs and same tab
   useEffect(() => {
     const handleStorageChange = (e: StorageEvent) => {
       if (e.key === key && e.newValue !== null) {
@@ -47,8 +52,19 @@ export function useLocalStorage<T>(key: string, initialValue: T) {
       }
     };
 
+    const handleLocalStorageChange = (e: CustomEvent) => {
+      if (e.detail.key === key) {
+        setStoredValue(e.detail.newValue);
+      }
+    };
+
     window.addEventListener('storage', handleStorageChange);
-    return () => window.removeEventListener('storage', handleStorageChange);
+    window.addEventListener('localStorageChange', handleLocalStorageChange as EventListener);
+    
+    return () => {
+      window.removeEventListener('storage', handleStorageChange);
+      window.removeEventListener('localStorageChange', handleLocalStorageChange as EventListener);
+    };
   }, [key]);
 
   return [storedValue, setValue, removeValue] as const;

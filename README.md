@@ -1,4 +1,36 @@
-# React + TypeScript + Vite
+# Music App
+
+A React + TypeScript + Vite music application with search and player functionality.
+
+## Live Demo
+
+🚀 **[View Live App](https://music-app-alpha-three.vercel.app/)**
+
+## Quick Start
+
+### Install
+```bash
+npm install
+```
+
+### Run
+```bash
+npm run dev
+```
+
+The app will be available at `http://localhost:5173`
+
+### Build
+```bash
+npm run build
+```
+
+### Preview Production Build
+```bash
+npm run preview
+```
+
+## Development
 
 This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
 

@@ -4,11 +4,15 @@ import Search from './features/search/Search'
 import Player from './features/player/Player'
 import Recent from './features/search/Recent'
 import { useImageAnimation } from './hooks/useImageAnimation'
+import { useDocumentTitle } from './hooks/useDocumentTitle'
 import type { SelectedImage } from './types'
 
 function App() {
   const [selectedImage, setSelectedImage] = useState<SelectedImage | null>(null)
   const { animateImageSelection } = useImageAnimation()
+
+  // Update document title with selected mix name
+  useDocumentTitle('Jukebox', selectedImage?.alt)
 
   const handleImageSelect = (image: SelectedImage, sourceElement: HTMLElement) => {
     animateImageSelection(image, sourceElement, setSelectedImage)

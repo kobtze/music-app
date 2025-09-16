@@ -1,5 +1,5 @@
 // localStorage utilities for search history
-export const SEARCH_HISTORY_KEY = 'music-app-search-history';
+import { SEARCH_HISTORY_KEY, SEARCH_HISTORY_SIZE } from '../config/constants';
 
 /**
  * Retrieves the search history from localStorage
@@ -26,8 +26,8 @@ export const addToSearchHistory = (query: string): void => {
   const filteredHistory = history.filter(item => item !== query);
   // Add to beginning
   const newHistory = [query, ...filteredHistory];
-  // Keep only last 5
-  const limitedHistory = newHistory.slice(0, 5);
+  // Keep only last N items
+  const limitedHistory = newHistory.slice(0, SEARCH_HISTORY_SIZE);
   
   try {
     localStorage.setItem(SEARCH_HISTORY_KEY, JSON.stringify(limitedHistory));

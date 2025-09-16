@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react';
 import './Search.css';
 import type { SelectedImage, Result, SearchProps, MixCloudItemProps } from './types';
 import { addToSearchHistory } from '../utils/searchHistory';
+import { MIXCLOUD_API_BASE, SEARCH_LIMIT } from '../config/constants';
 
 
 function Search({ onImageSelect }: SearchProps) {
@@ -20,7 +21,7 @@ function Search({ onImageSelect }: SearchProps) {
     if (!searchQuery.trim()) return;
     
     setIsLoading(true);
-    const response = await fetch(`https://api.mixcloud.com/search/?q=${searchQuery}&type=cloudcast&limit=6&offset=${offset}`);
+    const response = await fetch(`${MIXCLOUD_API_BASE}/search/?q=${searchQuery}&type=cloudcast&limit=${SEARCH_LIMIT}&offset=${offset}`);
     const json = await response.json();
     setResults(json?.data || []);
     
@@ -35,7 +36,7 @@ function Search({ onImageSelect }: SearchProps) {
     setHasNextPage(json?.paging?.next ? true : false);
 
     if (hasNextPage) {
-      setNextOffset(offset + 6);
+      setNextOffset(offset + SEARCH_LIMIT);
     }
 
     setIsLoading(false);

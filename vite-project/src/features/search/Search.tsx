@@ -98,13 +98,15 @@ function Search({ onImageSelect }: SearchProps) {
         <p>No results found</p>
       </div>
     )}
-    <div className={`search-results ${viewMode === 'tile' ? 'tile-view' : 'list-view'}`}>
+    <div className="search-content">
       {isLoading ? (
         <LoadingSpinner />
       ) : (
-        results.map((result) => (
-          <MixcloudItem key={result.key} result={result} onImageSelect={onImageSelect} />
-        ))
+        <div className={`search-results ${viewMode === 'tile' ? 'tile-view' : 'list-view'}`}>
+          {results.map((result) => (
+            <MixcloudItem key={result.key} result={result} onImageSelect={onImageSelect} />
+          ))}
+        </div>
       )}
     </div>
     <div className="pagination-controls">

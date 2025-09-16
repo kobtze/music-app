@@ -112,6 +112,14 @@
   flex-shrink: 0;
 }
 
+/* Search Content Wrapper */
+.search-content {
+  flex: 1;
+  min-height: 0;
+  display: flex;
+  flex-direction: column;
+}
+
 /* View Toggle Buttons */
 .view-toggle-row {
   display: flex;

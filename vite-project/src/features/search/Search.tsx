@@ -21,7 +21,7 @@ function ErrorDisplay({ error, onRetry }: { error: string; onRetry: () => void }
     <div className="error-display">
       <div className="error-icon">⚠️</div>
       <div className="error-message">{error}</div>
-      <button onClick={onRetry} className="retry-button">
+      <button onClick={onRetry} className="btn">
         Try Again
       </button>
     </div>
@@ -88,7 +88,7 @@ function Search({ onImageSelect }: SearchProps) {
         className="search-input"
         placeholder="Search music..."
       />
-      <button onClick={handleSearch} className="search-button">Search</button>
+      <button onClick={handleSearch} className="btn btn-search">Go</button>
     </div>
     {error && (
       <ErrorDisplay error={error} onRetry={handleRetry} />
@@ -109,22 +109,24 @@ function Search({ onImageSelect }: SearchProps) {
     </div>
     <div className="pagination-controls">
       {hasNextPage && (
-        <button onClick={handleNextPage} className="next-button" disabled={isLoading}>
-          {isLoading ? 'Loading...' : 'Next'}
+        <button onClick={handleNextPage} className="btn btn-next" disabled={isLoading}>
+          {isLoading ? '⏳' : '⏩️'}
         </button>
       )}
       <div className="view-toggle-row">
         <button 
           onClick={() => setViewMode('list')} 
-          className={`view-toggle-button ${viewMode === 'list' ? 'active' : ''}`}
+          className={`btn btn-toggle ${viewMode === 'list' ? 'active' : ''}`}
+          title="List View"
         >
-          List
+          ☰
         </button>
         <button 
           onClick={() => setViewMode('tile')} 
-          className={`view-toggle-button ${viewMode === 'tile' ? 'active' : ''}`}
+          className={`btn btn-toggle ${viewMode === 'tile' ? 'active' : ''}`}
+          title="Tile View"
         >
-          Tile
+          ⊞
         </button>
       </div>
     </div>

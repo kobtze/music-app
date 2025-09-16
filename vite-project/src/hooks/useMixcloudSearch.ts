@@ -1,6 +1,6 @@
 import { useState, useCallback } from 'react';
 import { MIXCLOUD_API_BASE, SEARCH_LIMIT } from '../config/constants';
-import type { Result } from '../components/types';
+import type { Result } from '../types/api';
 
 interface SearchResponse {
   data: Result[];

@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import './Search.css';
-import type { SelectedImage, SearchProps, MixCloudItemProps } from '../../components/types';
+import type { SelectedImage, SearchProps, MixCloudItemProps } from '../../types';
 import { useMixcloudSearch } from '../../hooks/useMixcloudSearch';
 import { useSearchHistory } from '../../hooks/useSearchHistory';
 

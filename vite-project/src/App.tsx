@@ -3,7 +3,7 @@ import './App.css'
 import Search from './features/search/Search'
 import Player from './features/player/Player'
 import Recent from './features/search/Recent'
-import type { SelectedImage } from './components/types'
+import type { SelectedImage } from './types'
 
 function App() {
   const [selectedImage, setSelectedImage] = useState<SelectedImage | null>(null)

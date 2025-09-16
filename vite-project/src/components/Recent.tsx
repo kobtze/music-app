@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
-import { getSearchHistory, SEARCH_HISTORY_KEY } from '../utils/searchHistory';
+import { getSearchHistory } from '../utils/searchHistory';
+import { SEARCH_HISTORY_KEY } from '../config/constants';
 import './Recent.css';
 
 function Recent() {

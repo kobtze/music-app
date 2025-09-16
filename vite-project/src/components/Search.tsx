@@ -33,10 +33,11 @@ function Search({ onImageSelect }: SearchProps) {
     setNotFound(json?.data?.length === 0 ? true : false);
 
     // Check if there are more results by looking at json.paging.next
-    setHasNextPage(json?.paging?.next ? true : false);
-
-    if (hasNextPage) {
+    if (json?.paging?.next && typeof json.paging.next === 'string') {
+      setHasNextPage(true);
       setNextOffset(offset + SEARCH_LIMIT);
+    } else {
+      setHasNextPage(false);
     }
 
     setIsLoading(false);
